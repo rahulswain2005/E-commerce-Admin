@@ -1,0 +1,29 @@
+<!doctype html>
+<html><head><title>E-commerce Admin</title><link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}"></head>
+<body><div class="layout">
+<aside class="sidebar"><div class="logo">ECOM<span>PRO</span></div>
+<div class="nav-title">Overview</div><nav class="nav">
+<a class="active" href="/"><span class="icon">▦</span><span>Dashboard</span></a>
+<a href="/orders"><span class="icon">◫</span><span>Orders</span></a>
+<a href="/products"><span class="icon">▣</span><span>Products</span></a>
+</nav><div class="nav-title">Management</div><nav class="nav">
+<a href="/products"><span class="icon">＋</span><span>Add Product</span></a>
+<a href="/settings"><span class="icon">⚙</span><span>Settings</span></a>
+</nav></aside>
+<main class="main"><header class="topbar"><div class="title"><h1>Dashboard</h1><p>Welcome back, Admin. Here's what's happening today.</p></div><div class="actions"><input class="search" placeholder="Search anything..."><div>🔔</div><div class="avatar">RS</div></div></header>
+<section class="grid">
+<div class="card metric"><div><div class="label">Total Revenue</div><h2>₹{{ "{:,.0f}".format(revenue*83) }}</h2><span class="trend">↗ 12.8% this month</span></div><div class="metric-icon">₹</div></div>
+<div class="card metric"><div><div class="label">Total Orders</div><h2>{{ orders|length + 1240 }}</h2><span class="trend">↗ 8.4% this month</span></div><div class="metric-icon">🛒</div></div>
+<div class="card metric"><div><div class="label">Customers</div><h2>8,942</h2><span class="trend">↗ 5.2% this month</span></div><div class="metric-icon">♙</div></div>
+<div class="card metric"><div><div class="label">Products Sold</div><h2>{{ "{:,}".format(total_sales) }}</h2><span class="trend">↗ 10.1% this month</span></div><div class="metric-icon">▣</div></div>
+</section>
+<section class="two"><div class="card"><div class="section-head"><h3>Revenue Overview</h3><a href="#">Last 7 months ▾</a></div>
+<div class="chart">{% for h in [42,58,48,72,64,86,96] %}<div class="bar" style="height:{{h}}%"><small>{{ ["Mar","Apr","May","Jun","Jul","Aug","Sep"][loop.index0] }}</small></div>{% endfor %}</div></div>
+<div class="card"><div class="section-head"><h3>Sales by Category</h3><a href="#">View all</a></div>
+{% for name,value,amount,ico in [("Electronics",42,12850,"⌁"),("Fashion",28,8640,"◈"),("Home & Living",18,5620,"⌂"),("Beauty",12,3740,"✦")] %}
+<div class="category"><div class="cat-icon">{{ico}}</div><div class="cat-info"><strong>{{name}}</strong><span>{{value}}% of sales</span></div><div class="cat-value">₹{{amount}}</div></div>{% endfor %}
+</div></section>
+<section class="card table-card"><div class="section-head"><h3>Recent Orders</h3><a href="/orders">View all orders →</a></div>
+<table class="table"><thead><tr><th>Order</th><th>Customer</th><th>Product</th><th>Amount</th><th>Date</th><th>Status</th></tr></thead><tbody>
+{% for o in orders %}<tr><td><strong>{{o.id}}</strong></td><td>{{o.customer}}</td><td>{{o.product}}</td><td>₹{{ "{:,.2f}".format(o.amount*83) }}</td><td>{{o.date}}</td><td><span class="pill {{o.status|lower|replace(' ','')}}">{{o.status}}</span></td></tr>{% endfor %}
+</tbody></table></section></main></div></body></html>
